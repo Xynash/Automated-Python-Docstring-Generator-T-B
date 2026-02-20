@@ -105,7 +105,7 @@ This project follows a professional Feature-Branch Workflow:
 
     Member 3 : Kasa Navyasa Durga
 
-    Member 4 : Vattkaoti Pooja
+    Member 4 : Pooja Vattikoti 
 
 
 📄 License
