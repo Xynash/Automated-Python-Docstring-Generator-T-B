@@ -39,6 +39,22 @@ An AI-powered system that reads Python files, understands function logic through
 
     Environment Management: Python-dotenv, Pydantic
 
+📂 Project Structure
+code Text
+
+Automated-Python-Docstring-Generator/
+├── app/
+│   ├── core/
+│   │   ├── ai_docstring_engine.py  # AI integration & API handling
+│   │   ├── ai_engine.py            # AST-based metadata extraction
+│   │   ├── parser.py               # Logic for file/class/func parsing
+│   │   ├── inserter.py             # Safely writes docstrings to code
+│   │   └── prompt_builder.py       # High-context prompt engineering
+│   ├── utils/
+│   │   └── validators.py           # File validation logic
+│   └── streamlit_app.py            # User Interface
+├── requirements.txt                # Project dependencies
+└── README.md                       # Project documentation
 
 🚀 Getting Started
 1. Prerequisites
@@ -107,7 +123,12 @@ This project follows a professional Feature-Branch Workflow:
 
     Member 4 : Pooja Vattikoti 
 
+    Member 4 : Vattkaoti Pooja
+
 
 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
