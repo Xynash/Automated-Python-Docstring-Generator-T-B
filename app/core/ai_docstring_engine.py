@@ -17,3 +17,4 @@ def generate_ai_docstring(func_data):
     AI generation is currently disabled.
     """
     raise Exception("AI mode is disabled. Please install 'openai' library to enable.")
+    
