@@ -1,4 +1,22 @@
+# Python bytecode (Junk files)
 __pycache__/
-**/*.pyc
+*.py[cod]
+*$py.class
+app/**/__pycache__/
+
+# Environment & Secrets (CRITICAL: Do not remove)
 .env
 venv/
+env/
+ENV/
+
+# Streamlit local settings
+.streamlit/config.toml
+
+# Project specific uploads (Temporary files)
+app/uploads/*.py
+!app/uploads/.gitkeep
+
+# OS specific files
+.DS_Store
+Thumbs.db
