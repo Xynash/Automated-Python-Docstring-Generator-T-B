@@ -12,7 +12,7 @@ if ROOT_DIR not in sys.path:
     sys.path.append(ROOT_DIR)
 
 # ---------------- INTERNAL IMPORTS ----------------
-from app.core.docstring_gen import generate_docstring
+#from app.core.docstring_gen import generate_docstring
 from app.core.inserter import insert_docstring
 from app.core.ai_engine import analyze_function
 
@@ -65,9 +65,6 @@ uploaded_file = st.file_uploader(
     type=["py"]
 )
 
-# AI Toggle hidden/disabled for now
-# Replace the "use_ai = False" line and area around it with:
-use_ai = st.toggle("🤖 Use AI Mode (OpenAI)", value=False)
 
 style = st.selectbox(
     "📝 Docstring Style",
@@ -108,22 +105,13 @@ if uploaded_file and generate:
             if func_data["docstring"]:
                 continue
 
-            if use_ai:
-                try:
-                    doc = generate_ai_docstring(func_data, style=style, language=language)
-                except Exception as ai_error:
-                    st.warning(f"AI failed for `{func_data['name']}`, falling back to heuristic. Error: {ai_error}")
-                    doc = generate_docstring(func_data)
-                else:
-                    doc = generate_docstring(func_data)
-
+            doc = generate_ai_docstring(func_data, style=style, language=language)
             # Insert docstring safely
             updated_code = insert_docstring(updated_code, func_data, doc)
 
         # ---------- STATUS ----------
         
-        mode_label = f"AI ({style} style, {language})" if use_ai else "Local Heuristic"
-        st.success(f"✨ Docstrings generated using {mode_label} mode!")
+        st.success(f"✨ Docstrings generated!")
         # ---------- OUTPUT ----------
         col1, col2 = st.columns(2)
 
