@@ -17,7 +17,7 @@ from app.core.inserter import insert_docstring
 from app.core.ai_engine import analyze_function
 
 # COMMENTED OUT TO AVOID ERRORS SINCE OPENAI IS NOT INSTALLED
-# from app.core.ai_docstring_engine import generate_ai_docstring
+from app.core.ai_docstring_engine import generate_ai_docstring
 
 
 # ---------- PAGE CONFIG ----------
@@ -66,8 +66,20 @@ uploaded_file = st.file_uploader(
 )
 
 # AI Toggle hidden/disabled for now
-use_ai = False 
+# Replace the "use_ai = False" line and area around it with:
+use_ai = st.toggle("🤖 Use AI Mode (OpenAI)", value=False)
 
+style = st.selectbox(
+    "📝 Docstring Style",
+    ["Google", "NumPy", "Sphinx", "JSDoc", "Javadoc", "Doxygen"],
+    help="Choose the documentation style for generated docstrings"
+)
+
+language = st.selectbox(
+    "🌐 Language",
+    ["python", "javascript", "java", "cpp"],
+    help="Select the programming language of the uploaded file"
+)
 generate = st.button("✨ Generate Docstrings")
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -96,15 +108,22 @@ if uploaded_file and generate:
             if func_data["docstring"]:
                 continue
 
-            # ALWAYS USE HEURISTIC MODE (No API calls)
-            doc = generate_docstring(func_data)
+            if use_ai:
+                try:
+                    doc = generate_ai_docstring(func_data, style=style, language=language)
+                except Exception as ai_error:
+                    st.warning(f"AI failed for `{func_data['name']}`, falling back to heuristic. Error: {ai_error}")
+                    doc = generate_docstring(func_data)
+                else:
+                    doc = generate_docstring(func_data)
 
             # Insert docstring safely
             updated_code = insert_docstring(updated_code, func_data, doc)
 
         # ---------- STATUS ----------
-        st.success(f"✨ Docstrings generated successfully using Local Heuristic mode!")
-
+        
+        mode_label = f"AI ({style} style, {language})" if use_ai else "Local Heuristic"
+        st.success(f"✨ Docstrings generated using {mode_label} mode!")
         # ---------- OUTPUT ----------
         col1, col2 = st.columns(2)
 
