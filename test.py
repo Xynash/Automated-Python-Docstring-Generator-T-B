@@ -10,7 +10,7 @@ def filter_even_numbers(number_list):
 # 2. Prepare some data
 my_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-# 3. Call the function and store the result
+# 3. Call the function and storeg the result
 result = filter_even_numbers(my_numbers)
 
 # 4. Print the result
