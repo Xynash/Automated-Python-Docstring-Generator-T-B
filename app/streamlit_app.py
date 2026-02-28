@@ -53,6 +53,8 @@ with col_a:
     use_ai = st.toggle("🚀 Enable AI Analysis (Groq/Llama 3.3)", value=True)
 with col_b:
     doc_style = st.selectbox("Style Preference", ["google", "numpy", "sphinx"])
+    
+
 
 generate = st.button("✨ Generate Docstrings")
 st.markdown('</div>', unsafe_allow_html=True)
@@ -74,7 +76,7 @@ if uploaded_file and generate:
 
                     # Get metadata
                     func_metadata = analyze_function(func_info["node"], class_name=func_info["class_name"])
-
+                    
                     # Logic: AI with Fallback
                     if use_ai:
                         try:
@@ -93,7 +95,7 @@ if uploaded_file and generate:
                     updated_code = insert_docstring(updated_code, func_metadata, doc)
 
                 # Status Message
-                mode_text = "AI Mode" if is_ai else "Local Heuristic Mode"
+                mode_text = "AI Mode" if use_ai else "Local Heuristic Mode"
                 st.success(f"✨ Docstrings generated successfully using {mode_text}!")
 
                 col1, col2 = st.columns(2)
