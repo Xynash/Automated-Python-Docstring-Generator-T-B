@@ -10,9 +10,6 @@ venv/
 env/
 ENV/
 
-# Streamlit local settings
-.streamlit/config.toml
-
 # Project specific uploads (Temporary files)
 app/uploads/*.py
 !app/uploads/.gitkeep
