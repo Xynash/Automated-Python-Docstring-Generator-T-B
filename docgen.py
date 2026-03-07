@@ -1,24 +1,28 @@
 import requests
-import sys
+import argparse
 import os
 
 API_URL = "http://127.0.0.1:8000/generate"
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: docgen <file.py>")
-        return
+    parser = argparse.ArgumentParser()
+    parser.add_argument("file", help="Path to Python file")
+    parser.add_argument("--style", default="google",
+                        help="Docstring style (google/numpy/sphinx)")
+    
+    args = parser.parse_args()
 
-    file_path = sys.argv[1]
-
-    if not os.path.exists(file_path):
+    if not os.path.exists(args.file):
         print("File not found.")
         return
 
-    with open(file_path, "r") as f:
+    with open(args.file, "r") as f:
         code = f.read()
 
-    response = requests.post(API_URL, json={"code": code})
+    response = requests.post(API_URL, json={
+        "code": code,
+        "style": args.style
+    })
 
     if response.status_code == 200:
         print(response.json()["documented_code"])
