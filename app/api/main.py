@@ -61,4 +61,4 @@ async def generate_code_endpoint(request: CodeRequest):
 
     except Exception as e:
         print(f"🔥 Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) 
