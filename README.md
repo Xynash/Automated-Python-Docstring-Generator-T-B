@@ -1,118 +1,64 @@
-🐍 Automated Python Docstring Generator
+# 🐍 PyDoc AI: Intelligent Documentation Engine
 
-An intelligent tool that automatically generates professional, industry-standard documentation (docstrings) for Python code using Abstract Syntax Trees (AST) and Large Language Models (LLMs).
+**PyDoc AI** is a professional-grade, production-ready ecosystem designed to automate the most tedious part of software engineering: documentation. By leveraging **Abstract Syntax Trees (AST)** and the **Llama 3.3 70B** model, it performs deep semantic analysis to generate industry-standard docstrings that actually understand your code's intent.
 
-📌 Project Overview
+# ✨ Features
 
-The Problem 
+*   🔍 **Logic-Aware Synthesis:** Unlike static templates, our AI analyzes the mathematical and logical operations within a function to describe *how* and *why* it works.
+*   🌳 **AST Precision:** Uses Python's Abstract Syntax Tree to surgically identify functions, class scopes, and arguments without ever executing the source code.
+*   🌐 **Headless API Architecture:** A robust FastAPI backend that can power Web UIs, CLI tools, and IDE extensions (VS Code) simultaneously.
+*   🎨 **Enterprise Multi-Style:** One-click support for **Google**, **NumPy**, and **Sphinx** documentation standards.
+*   🛡️ **Defensive Engineering:** A built-in Heuristic Fallback system ensures you get documentation even if the AI cloud service is offline.
 
-Developers often view manual documentation as time-consuming and tedious. This results in codebases with poor readability, high maintenance costs, and difficult onboarding for new team members.
-Our Solution
+## 🛠️ Tech Stack
 
-An AI-powered system that reads Python files, understands function logic through static analysis (AST), and generates clear, professional docstrings in seconds. It supports multiple formats (Google, NumPy, reStructuredText) and ensures 100% documentation coverage.
+*   **Frontend:** Streamlit (Custom Dark/Neon Engineering Theme).
+*   **Backend:** Python, FastAPI, Uvicorn (Asynchronous Concurrency).
+*   **Parsing Engine:** Python AST (Abstract Syntax Tree).
+*   **AI Engine:** Groq SDK (Llama 3.3 70B Model) for sub-second inference.
+*   **Environment:** Pydantic (Data Models), Python-Dotenv.
 
-✨ Key Features
+```text
+📂 File Directory Structure
 
-    AST-Based Parsing: Uses Python's ast module to accurately identify functions, classes, parameters, and return types without executing the code.
+Automated-Python-Docstring-Generator-T-B/
+├── app/
+│   ├── api/                # FastAPI Entry point & REST routes
+│   │   ├── main.py
+│   │   └── __init__.py
+│   ├── core/               # The "Brain" (AST & AI Logic)
+│   │   ├── parser.py       # Metadata extraction
+│   │   ├── ai_engine.py    # Logic analysis
+│   │   ├── inserter.py     # Surgical code injection
+│   │   ├── prompt_builder.py
+│   │   └── ai_docstring_engine.py
+│   ├── utils/              # File validation & helpers
+│   ├── streamlit_app.py    # Web-based UI Dashboard
+│   └── __init__.py
+├── .env                    # API Keys (Environment Variables)
+├── .gitignore              # Git exclusion rules
+├── requirements.txt        # Project dependencies
+└── README.md               # Documentation
 
-    AI-Driven Logic Analysis: Leverages OpenAI's GPT models to understand the "Why" and "How" behind function logic, moving beyond simple keyword matching.
+# 🚀 Installation & Setup
 
-    Context Awareness: Recognizes class methods and global functions to provide scope-accurate descriptions.
+### 1. Prerequisites
+*   **Python 3.10+**
+*   **Groq API Key** (Get it free at [console.groq.com](https://console.groq.com))
 
-    Multiple Style Support: Generate docstrings in Google, NumPy, or reStructuredText formats.
-
-    Safe Code Insertion: Reconstructs code with new docstrings while preserving original logic and indentation.
-
-    FastAPI Ready: Built with a modular backend designed to transition from a prototype to a production-grade API.
-
-🛠 Tech Stack
-
-    Core: Python 3.x
-
-    Parsing: ast (Abstract Syntax Tree)
-
-    AI Integration: OpenAI API (GPT-4o-mini)
-
-    Web Interface: Streamlit
-
-    API (In Progress): FastAPI
-
-    Environment Management: Python-dotenv, Pydantic
-
-    
-🚀 Getting Started
-1. Prerequisites
-
-    Python 3.9 or higher
-
-    An OpenAI API Key
-
-2. Installation
-code Bash
-
+### 2. Environment Setup
+```bash
 # Clone the repository
 git clone https://github.com/Xynash/Automated-Python-Docstring-Generator-T-B.git
-
-# Navigate to the project directory
 cd Automated-Python-Docstring-Generator-T-B
+
+# Create and activate a virtual environment
+python -m venv venv
+
+# On Windows:
+.\venv\Scripts\activate
+# On Mac/Linux:
+source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
-
-3. Configuration
-
-Create a .env file in the root directory and add your OpenAI API key:
-code Text
-
-OPENAI_API_KEY=your_actual_api_key_here
-
-4. Running the App
-code Bash
-
-python -m streamlit run app/streamlit_app.py
-
-📊 Workflow & Collaboration
-
-This project follows a professional Feature-Branch Workflow:
-
-    main Branch: Contains the stable project skeleton and configuration.
-
-    Member-1 Branch: Active development for the core AI engine and UI.
-
-    Pull Requests: All new features are reviewed and merged into main only after passing quality checks.
-
-🛣 Roadmap
-
-    Core AST Parser
-
-    AI Docstring Generation (Google Style)
-
-    Streamlit Prototype
-
-    FastAPI Backend Migration
-
-    Support for JavaScript & Go
-
-    VS Code Extension Integration
-
-    CI/CD Pipeline for automatic documentation checks
-
-👥 Contributors
-
-    Member 1 : Ansh Sharma
-
-    Member 2 : Sreya Merin Sam
-
-    Member 3 : Kasa Navyasa Durga
-
-    Member 4 : Pooja Vattikoti 
-
-    Member 4 : Vattkaoti Pooja
-
-
-📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-

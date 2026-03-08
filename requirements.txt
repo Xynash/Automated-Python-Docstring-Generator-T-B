@@ -1,3 +1,6 @@
 streamlit
 openai
 fastapi
+groq
+uvicorn
+dotenv
