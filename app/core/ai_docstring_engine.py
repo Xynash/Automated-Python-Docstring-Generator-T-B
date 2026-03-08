@@ -15,6 +15,16 @@ if API_KEY:
         print("✅ DEBUG: Groq Client Initialized.")
     except Exception as e:
         print(f"❌ DEBUG: Groq Init Failed: {e}")
+MODEL = "llama-3.3-70b-versatile"
+
+def clean_ai_output(doc: str) -> str:
+    doc = doc.replace("```python", "").replace("```", "")
+    doc = doc.replace('"""', "").replace("'''", "")
+    doc = doc.replace("Here is the docstring:", "")
+    doc = doc.replace("Here's the docstring:", "")
+    doc = doc.replace("Docstring:", "")
+    doc = doc.strip()
+    return doc
 
 def generate_ai_docstring(func_data, style="google"):
     """
@@ -29,7 +39,7 @@ def generate_ai_docstring(func_data, style="google"):
 
     try:
         completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model=MODEL,
             messages=[
                 {
                     "role": "system",
@@ -45,8 +55,7 @@ def generate_ai_docstring(func_data, style="google"):
         
         # --- THE FIX: REMOVE EXTRA QUOTES ---
         # This prevents the '''""" logic and makes it clean
-        doc = doc.replace("```python", "").replace("```", "")
-        doc = doc.strip().strip('"').strip("'")
+        doc = clean_ai_output(doc)
         
         return doc
 
