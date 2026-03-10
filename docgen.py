@@ -2,7 +2,7 @@ import requests
 import argparse
 import os
 
-API_URL = "http://127.0.0.1:8000/generate"
+API_URL = "http://127.0.0.1:8000/process"
 
 def main():
     parser = argparse.ArgumentParser()
