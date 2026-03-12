@@ -1,99 +1,112 @@
 import sys
 import os
 import time
+import psutil  # Ensure you ran: pip install psutil
 from typing import Optional
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from app.core.parser import extract_functions
 from app.core.ai_engine import analyze_function
 from app.core.docstring_gen import generate_docstring
 from app.core.inserter import insert_docstring
-# Import both the docstring engine and the new structured reviewer
-from app.core.ai_docstring_engine import generate_ai_docstring, generate_structured_review
-
-app = FastAPI(
-    title="PyDoc AI: Unified Multi-Service Gateway",
-    version="3.0.0"
+from app.core.ai_docstring_engine import (
+    generate_ai_docstring, 
+    generate_structured_review, 
+    generate_project_readme
 )
 
-# --- MILESTONE 3: UNIFIED REQUEST SCHEMA ---
+# --- THE CRITICAL LINE UVICORN NEEDS ---
+app = FastAPI(
+    title="PyDoc AI: Advanced Unified Platform",
+    description="Multi-service gateway for Documentation, Code Review, and Project Analytics",
+    version="3.1.0"
+)
+
+# --- REQUEST SCHEMA ---
 class CodeRequest(BaseModel):
     code: str
     style: Optional[str] = "google"
-    task: str = "document"  # New: Options are "document" or "review"
-    language: str = "python" # To support Member 4's Java/C++ expansion
+    task: str = "document"    # document | review | readme
+    language: str = "python"  # python | java | javascript | cpp
+
+# Helper to track RAM Usage
+def get_memory_usage():
+    process = psutil.Process(os.getpid())
+    return round(process.memory_info().rss / (1024 * 1024), 2)
 
 @app.get("/")
 def health_check():
     return {
         "status": "active",
-        "version": "Milestone 3",
-        "services": ["Documentation", "Code Review", "Telemetry"]
+        "version": "Milestone 3.1",
+        "services": ["Documentation", "Code Review", "README Generator", "Resource Telemetry"]
     }
 
 @app.post("/process")
 async def process_code_endpoint(request: CodeRequest):
-    # --- FEATURE: SYSTEM PERFORMANCE TELEMETRY ---
     start_time = time.perf_counter() 
+    start_mem = get_memory_usage()
     
     try:
         source_code = request.code
         task = request.task.lower()
+        lang = request.language.lower()
         
-        # --- FEATURE: UNIFIED TASK GATEWAY (Switching Logic) ---
-        
-        # TASK 1: CODE REVIEW (Member 2's Logic)
+        # 1. Polyglot Router
+        if lang != "python":
+            if task == "review":
+                result = generate_structured_review(source_code)
+            elif task == "readme":
+                result = generate_project_readme(source_code)
+            else:
+                result = generate_ai_docstring({"full_code": source_code, "name": "File_Logic"}, request.style)
+            
+            return {
+                "status": "success",
+                "language": lang,
+                "output": result,
+                "telemetry": {"execution_time_sec": round(time.perf_counter() - start_time, 4)}
+            }
+
+        # 2. README Task
+        if task == "readme":
+            readme_content = generate_project_readme(source_code)
+            return {
+                "status": "success",
+                "content": readme_content,
+                "telemetry": {"execution_time_sec": round(time.perf_counter() - start_time, 4)}
+            }
+
+        # 3. Review Task
         if task == "review":
-            # This calls the Structured JSON Orchestration logic
             review_results = generate_structured_review(source_code)
-            execution_time = round(time.perf_counter() - start_time, 4)
-            
             return {
                 "status": "success",
-                "task": "review",
                 "data": review_results,
-                "telemetry": {
-                    "execution_time_sec": execution_time,
-                    "model": "Llama-3.3-70B"
-                }
+                "telemetry": {"execution_time_sec": round(time.perf_counter() - start_time, 4)}
             }
 
-        # TASK 2: DOCUMENTATION (Existing Core Logic)
-        else:
-            functions = extract_functions(source_code)
-            updated_code = source_code
-            doc_count = 0
-
-            if not functions:
-                return {"documented_code": source_code, "info": "No functions detected."}
-
-            for func in functions:
-                if func["docstring"]: continue
-                
-                metadata = analyze_function(func["node"], class_name=func["class_name"])
-                
-                try:
-                    docstring = generate_ai_docstring(metadata, request.style)
-                except Exception as e:
-                    print(f"⚠️ AI DocGen Fallback: {e}")
-                    docstring = generate_docstring(metadata)
-                
-                updated_code = insert_docstring(updated_code, metadata, docstring)
-                doc_count += 1
+        # 4. Documentation Task (Python AST)
+        functions = extract_functions(source_code)
+        updated_code = source_code
+        for func in functions:
+            if func["docstring"]: continue
+            metadata = analyze_function(func["node"], class_name=func["class_name"])
+            try:
+                doc = generate_ai_docstring(metadata, request.style)
+            except:
+                doc = generate_docstring(metadata, request.style)
+            updated_code = insert_docstring(updated_code, metadata, doc)
             
-            execution_time = round(time.perf_counter() - start_time, 4)
-            
-            return {
-                "status": "success",
-                "task": "documentation",
-                "documented_code": updated_code,
-                "telemetry": {
-                    "functions_processed": doc_count,
-                    "execution_time_sec": execution_time,
-                    "language": request.language
-                }
+        execution_time = round(time.perf_counter() - start_time, 4)
+        return {
+            "status": "success",
+            "documented_code": updated_code,
+            "telemetry": {
+                "execution_time_sec": execution_time,
+                "memory_used_mb": round(get_memory_usage() - start_mem, 4)
             }
+        }
 
     except Exception as e:
-        print(f"🔥 Gateway Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
