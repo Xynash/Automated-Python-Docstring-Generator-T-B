@@ -29,16 +29,39 @@ def clean_ai_output(doc: str) -> str:
         doc = doc.replace(p, "")
     return doc.strip()
 
-def generate_ai_docstring(func_data, style="google"):
+def generate_ai_docstring(func_data, style="google", language=None):
     """
-    TASK: Documentation Generation
-    Generates a professional docstring and cleans it for the AST inserter.
+    Generates a professional docstring and cleans it for the inserter.
+    Supports Python, Java, JavaScript, C and C++.
     """
     global client
     if not client:
         raise Exception("AI Client is not initialized.")
 
-    prompt = build_prompt(func_data, style)
+    # Auto detect language from code if not provided
+    if not language:
+        from app.core.prompt_builder import detect_language
+        language = detect_language(func_data.get("full_code", ""))
+
+    prompt = build_prompt(func_data, style, language)
+
+    # Language aware system prompt
+    language_map = {
+        "python": "Senior Python Developer",
+        "java": "Senior Java Developer",
+        "javascript": "Senior JavaScript Developer",
+        "c": "Senior C Developer",
+        "cpp": "Senior C++ Developer"
+    }
+    role = language_map.get(language, "Senior Software Developer")
+
+    # Style label for non-Python
+    style_label = {
+        "java": "Javadoc",
+        "javascript": "JSDoc",
+        "c": "Doxygen",
+        "cpp": "Doxygen"
+    }.get(language, style.upper())
 
     try:
         completion = client.chat.completions.create(
@@ -46,7 +69,10 @@ def generate_ai_docstring(func_data, style="google"):
             messages=[
                 {
                     "role": "system",
-                    "content": f"You are a Senior Python Developer. Write a technical {style}-style docstring. Return ONLY the text."
+                    "content": f"""You are a {role}. 
+Write a detailed {style_label} style docstring that accurately describes what the function ACTUALLY does.
+Read the code carefully before writing.
+Return ONLY the docstring content — no extra text."""
                 },
                 {"role": "user", "content": prompt}
             ],
@@ -58,7 +84,6 @@ def generate_ai_docstring(func_data, style="google"):
 
     except Exception as e:
         raise Exception(f"Groq DocGen Error: {str(e)}")
-
 def generate_structured_review(code: str):
     """
     TASK: Structured Code Review (Milestone 3 Feature)

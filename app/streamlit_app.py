@@ -32,6 +32,7 @@ from app.core.ai_docstring_engine import generate_ai_docstring
 from app.core.code_reviewer import review_code
 from app.core.readme_generator import generate_readme
 from app.core.chat_engine import chat_with_code
+from app.core.prompt_builder import detect_language
 
 # ---------- PAGE CONFIG ----------
 st.set_page_config(
@@ -86,8 +87,8 @@ with tab1:
             updated_code = code
 
             with st.spinner("Analyzing code structure and generating docstrings..."):
-                functions = extract_functions(code)
-
+                detected_lang = detect_language(code)
+                functions = extract_functions(code, language=detected_lang)
                 if not functions:
                     st.warning("No functions found.")
                 else:
@@ -95,14 +96,17 @@ with tab1:
                         if func_info["docstring"]:
                             continue
 
-                        func_metadata = analyze_function(
-                            func_info["node"],
-                            class_name=func_info["class_name"]
-                        )
+                        if func_info["node"] is None:
+                            func_metadata = analyze_function(func_info)
+                        else:
+                            func_metadata = analyze_function(
+                                func_info["node"],
+                                class_name=func_info["class_name"]
+                            )
 
                         if use_ai:
                             try:
-                                doc = generate_ai_docstring(func_metadata, style=doc_style)
+                                doc = generate_ai_docstring(func_metadata, style=doc_style, language=detected_lang)
                                 is_ai = True
                             except Exception as e:
                                 st.error(f"AI failed for {func_info['name']}: {e}")

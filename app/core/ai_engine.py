@@ -20,13 +20,25 @@ def get_arg_metadata(node):
         args_meta[arg.arg] = annotation
     return args_meta
 
-def analyze_function(node: ast.FunctionDef, class_name=None):
+def analyze_function(node, class_name=None):
     """Prepares clean metadata for the AI Engine."""
+    # Handle non-Python nodes (Java, JS, C, C++)
+    if isinstance(node, dict):
+        return {
+            "name": node.get("name"),
+            "class_context": node.get("class_name"),
+            "args": {arg: "Any" for arg in node.get("args", [])},
+            "returns": node.get("returns", "Any"),
+            "docstring": node.get("docstring"),
+            "full_code": node.get("full_code", "")
+        }
+
+    # Original Python AST handling
     return {
         "name": node.name,
         "class_context": class_name,
         "args": get_arg_metadata(node),
         "returns": infer_return_type(node),
         "docstring": ast.get_docstring(node),
-        "full_code": ast.unparse(node) # Crucial for AI to understand logic
+        "full_code": ast.unparse(node)
     }
