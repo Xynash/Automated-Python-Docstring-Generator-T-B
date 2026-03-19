@@ -1,5 +1,0 @@
-streamlit
-fastapi
-groq
-uvicorn
-dotenv
