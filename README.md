@@ -7,18 +7,34 @@
 
 **Docgen** is a professional-grade, service-oriented platform designed to automate the lifecycle of code documentation and quality auditing across multiple programming languages. By orchestrating **Abstract Syntax Trees (AST)** with the **Llama 3.3 70B** model via Groq’s high-speed LPU architecture, the platform performs deep semantic analysis to produce production-ready code intelligence for **Python, Java, JavaScript, and C++**.
 
----
+## 📌 Project Overview
 
-## 🚀 Universal Platform Capabilities
+The Docgen Platform allows users to:
 
-Docgen provides a centralized hub for developer productivity, moving beyond simple docstring generation into a comprehensive **Documentation-as-a-Service (DaaS)** suite:
+*   **Generate Docstrings**: Automatically insert professional documentation into Python code using AST logic.
+*   **Polyglot Support**: Document and analyze logic for *Java, JavaScript, and C++* via intelligent AI routing.
+*   **Logic-Aware Code Review**: Perform structured audits to detect bugs, security risks, and optimization needs.
+*   **README Generation**: Synthesize entire codebases into a professional GitHub-style README.md.
+*   **Interactive Code Chat**: Query specific code blocks and logic via a real-time conversational assistant.
+*   **Multi-Style Formatting**: Toggle between *Google, NumPy, and Sphinx* documentation standards.
+*   **Batch Processing**: Upload multiple files or a **Project ZIP** for bulk documentation.
 
-*   **Polyglot Logic Routing:** Intelligent analysis supporting **Python, Java, JavaScript, and C++** by routing logic through language-specific AI prompts.
-*   **Batch Project Ingestion:** Support for **Multiple File selection** and **ZIP Archive** uploads, allowing for the documentation of entire repositories in seconds.
-*   **Intelligent Code Chat:** A persistent conversational assistant in the sidebar that allows developers to query their logic and refine documentation in real-time.
-*   **Semantic Quality Auditing:** Logic-aware bug detection and security vulnerability scanning with structured JSON reporting.
-*   **Unified Service Gateway:** A high-performance FastAPI hub orchestrating all tasks through a single, asynchronous `/process` endpoint.
-*   **Operational Telemetry:** Real-time monitoring of RAM consumption (MB) and inference latency to ensure enterprise efficiency.
+This project is suitable for:
+*   Engineering teams maintaining large codebases.
+*   Open-source contributors requiring standardized documentation.
+*   Automated CI/CD documentation pipelines.
+
+## 🛠️ Tech Stack
+
+| Category                      | Technology                         |
+| ----------------------------- | ---------------------------------- |
+| Frontend                      | Streamlit                          |
+| Backend                       | FastAPI                            |
+| AI Engine                     | Groq LPU + Llama 3.3 70B Model     |
+| Static Analysis               | Python AST (Abstract Syntax Tree)  |
+| Telemetry                     | PSUtil (RAM & Latency Tracking)    |
+| Data Validation               | Pydantic Models                    |
+| Environment                   | Python Virtual Environment (.venv) |
 
 ---
 
@@ -54,3 +70,161 @@ Automated-Python-Docstring-Generator-T-B/
 ├── .env                        # Environment Secrets (Local only)
 ├── .gitignore                  # Professional Git exclusion rules
 └── README.md                   # Platform Documentation
+```
+
+---
+## ✅ Prerequisites
+
+Ensure the following are installed on your system:
+
+*  **Python 3.9 or higher**
+*  **pip** (Python package manager)
+*  **Git**
+*  **Groq API Key (Available at console.groq.com)**
+
+Check your versions:
+```bash
+python --version
+pip --version
+git --version
+```
+---
+
+## ⚙️ Step-by-Step Setup Guide
+
+### 1. Create and Activate Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+Activate:
+
+**Windows:**
+
+```bash
+.venv\Scripts\activate
+```
+
+**macOS / Linux:**
+
+```bash
+source .venv/bin/activate
+```
+
+---
+
+### 2. Install Required Dependencies
+
+Create / verify `requirements.txt`:
+
+```text
+streamlit
+fastapi
+groq
+uvicorn
+dotenv
+```
+
+Install all dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### 3. Configure API Keys
+
+Create a file named .env in the root directory and add your key:
+code Text
+```bash
+GROQ_API_KEY=gsk_your_key_here
+```
+
+---
+
+## ▶️ Running the Application
+### Option 1: Web Dashboard (Streamlit)
+```bash
+
+python -m streamlit run app/streamlit_app.py
+```
+---
+Accessible at:
+```bash
+ http://localhost:8501
+```
+---
+### Option 2: Backend API (FastAPI)
+```bash
+
+python -m uvicorn app.api.main:app --reload
+```
+---
+Interactive Documentation: http://127.0.0.1:8000/docs
+### 🧪 Supported Capabilities
+## 📄 Source Inputs
+
+  * ✅ Python (.py) - Full AST Support
+
+  * ✅ Java (.java) - Routed AI Logic
+
+  *  ✅ JavaScript (.js) - Routed AI Logic
+
+  * ✅ C/C++ (.c, .cpp) - Routed AI Logic
+
+  *  ✅ Project ZIP - Automated Batch Extraction
+
+## 🔊 Intelligence Tasks
+
+  *  ✅ Documentation: Generates Google, NumPy, or Sphinx docstrings.
+
+  *  ✅ Code Review: Structured JSON analysis of bugs and security risks.
+
+  *  ✅ README Gen: Comprehensive Markdown project overviews.
+
+  *  ✅ Telemetry: Real-time RAM (MB) and Latency monitoring per request.
+---
+
+### 🔐 Git Workflow (Important)
+Add and Commit Changes
+```bash
+
+git add .
+git commit -m "Feature: Added Multi-Language Routing"
+```
+---
+
+Push ONLY to Your Branch
+ ```bash
+
+git push origin Member-x
+```
+---
+## 🚫 Never push directly to main without a Pull Request review.
+## 🚨 Common Errors & Fixes
+Error	Solution
+* JSON Decode Error (422)	Ensure input code is wrapped in a {"code": "..."} JSON object.
+* Attribute "app" not found	Ensure app = FastAPI() is defined in app/api/main.py.
+* ModuleNotFoundError	Ensure you have activated the .venv and run pip install.
+* Memory Error	Ensure psutil is installed for telemetry features.
+
+### 👥 Team B
+
+* Ansh Sharma
+
+* Sreya Merin Sam
+
+* Kasa Navyasa Durga
+
+* Vattikoti Pooja
+
+## ⭐ Acknowledgements
+
+* Streamlit Team
+* Open-source Python Community
+* Mentor Guidance
+
+---
+✨ This project follows professional Git and Python development practices for AI-driven code intelligence.
