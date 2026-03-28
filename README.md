@@ -43,32 +43,36 @@ This project is suitable for:
 The platform follows a **Decoupled Service-Oriented Architecture (SOA)** to ensure modularity and scalability.
 
 ```text
-Automated-Python-Docstring-Generator-T-B/
-├── .streamlit/                 # UI Configuration & Theming
+AUTOMATED-PYTHON-DOCSTRING-GENERATOR-T-B/
+├── .streamlit/                 # UI Configuration & Dashboard Theming
 │   └── config.toml
 ├── app/                        # Main Application Logic
 │   ├── api/                    # RESTful Service Layer (FastAPI)
-│   │   ├── main.py             # Unified Gateway & Telemetry logic
+│   │   ├── main.py             # Unified Gateway & Task Routing logic
 │   │   └── __init__.py
 │   ├── core/                   # The Intelligence Engine (Brain)
-│   │   ├── ai_docstring_engine.py # Core LLM Orchestration
-│   │   ├── ai_engine.py        # Logic extraction & context analysis
+│   │   ├── ai_docstring_engine.py # Core LLM Orchestration (Groq/Llama)
+│   │   ├── ai_engine.py        # Feature extraction & context analysis
 │   │   ├── chat_engine.py      # Conversational code assistant logic
 │   │   ├── code_reviewer.py    # Structured bug & security auditing
 │   │   ├── docstring_gen.py    # Heuristic fallback system
-│   │   ├── inserter.py         # Surgical AST code re-insertion (Python)
+│   │   ├── file_handler.py     # File I/O orchestration
+│   │   ├── inserter.py         # Surgical AST code re-insertion
 │   │   ├── parser.py           # AST node mapping & metadata extraction
-│   │   ├── prompt_builder.py   # High-context AI prompt engineering
+│   │   ├── prompt_builder.py   # High-context prompt engineering
 │   │   └── readme_generator.py # Automatic project documentation logic
 │   ├── utils/                  # Shared Helpers
 │   │   ├── validators.py       # Syntax and file-integrity checks
 │   │   └── __init__.py
-│   ├── streamlit_app.py        # Universal Dashboard UI
+│   ├── streamlit_app.py        # Enterprise Dashboard UI
 │   └── __init__.py
+├── docgen-extension/           # VS Code Extension source code
 ├── docgen.py                   # Main CLI Entry point
+├── docstring.py                # Standalone documentation utility
 ├── requirements.txt            # Production-grade dependencies
 ├── .env                        # Environment Secrets (Local only)
 ├── .gitignore                  # Professional Git exclusion rules
+├── LICENSE                     # MIT License
 └── README.md                   # Platform Documentation
 ```
 
