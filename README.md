@@ -220,7 +220,7 @@ Error	Solution
 
 * Sreya Merin Sam
 
-* Kasa Navyasa Durga
+* Kasa Navya Sri Durga
 
 * Vattikoti Pooja
 
