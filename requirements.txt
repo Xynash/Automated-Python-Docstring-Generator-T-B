@@ -2,4 +2,8 @@ streamlit
 fastapi
 groq
 uvicorn
-dotenv
+python-dotenv
+psutil
+pandas
+plotly
+pydantic
