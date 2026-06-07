@@ -1,18 +1,17 @@
-from app.core.ai_docstring_engine import client, MODEL
+from app.core.ai_docstring_engine import get_client, MODEL
+
 
 def chat_with_code(messages: list, code: str, doc_results: str = None, review_results: dict = None) -> str:
     """
     Chat with AI about the uploaded code and all generated results.
     """
+    client = get_client()
     if not client:
         raise Exception("AI Client is not initialized.")
 
-    # Build context from everything generated so far
     context = f"UPLOADED CODE:\n{code}\n"
-
     if doc_results:
         context += f"\nGENERATED DOCSTRINGS:\n{doc_results}\n"
-
     if review_results:
         context += "\nCODE REVIEW RESULTS:\n"
         for bug in review_results.get("bugs", []):
@@ -26,9 +25,7 @@ def chat_with_code(messages: list, code: str, doc_results: str = None, review_re
 
     system_prompt = f"""You are an expert code assistant. 
 You have full knowledge of the following code and all analysis done on it:
-
 {context}
-
 Answer questions about this code clearly and helpfully.
 Be specific and reference actual code when relevant.
 Keep answers concise but complete."""
@@ -43,6 +40,5 @@ Keep answers concise but complete."""
             temperature=0.3,
         )
         return completion.choices[0].message.content.strip()
-
     except Exception as e:
         raise Exception(f"Groq API Error: {str(e)}")
