@@ -1,4 +1,5 @@
-from app.core.ai_docstring_engine import client, MODEL
+from app.core.ai_docstring_engine import get_client, MODEL
+
 
 def review_code(code: str) -> dict:
     """
@@ -6,6 +7,7 @@ def review_code(code: str) -> dict:
     performance tips and best practices with line numbers,
     problematic code and fixed code snippets.
     """
+    client = get_client()  # lazy init, picks up Streamlit secrets correctly
     if not client:
         raise Exception("AI Client is not initialized.")
 
@@ -20,27 +22,19 @@ CRITICAL RULES:
 - Do NOT include any summary or explanation outside the sections
 CODE TO REVIEW:
 {code}
-
 You MUST respond in EXACTLY this format for each issue.
 Each issue MUST be on a single line starting with "- ":
-
 BUGS:
 - LINE: 5 | CODE: x = int(input()) | ISSUE: No input validation | FIX: x = int(input()) if input().isdigit() else 0
-
 SECURITY:
 - LINE: 10 | CODE: query = "SELECT * FROM users WHERE id=" + id | ISSUE: SQL injection vulnerability | FIX: query = "SELECT * FROM users WHERE id=?" , (id,)
-
 PERFORMANCE:
 - LINE: 15 | CODE: for i in range(len(lst)) | ISSUE: Inefficient iteration | FIX: for item in lst
-
 BEST PRACTICES:
 - LINE: 20 | CODE: def f(x) | ISSUE: Poor function naming | FIX: def calculate_total(value)
-
 SUMMARY:
 Write one paragraph summary here.
-
 """
-
     try:
         completion = client.chat.completions.create(
             model=MODEL,
@@ -53,12 +47,11 @@ Write one paragraph summary here.
             ],
             temperature=0.2,
         )
-
         raw = completion.choices[0].message.content.strip()
         return parse_review(raw)
-
     except Exception as e:
         raise Exception(f"Groq API Error: {str(e)}")
+
 
 def parse_review_item(line: str) -> dict:
     """
@@ -68,14 +61,13 @@ def parse_review_item(line: str) -> dict:
     item = {
         "line": "N/A",
         "code": "N/A",
-        "issue": line[2:],  # fallback: use full line as issue
+        "issue": line[2:],
         "fix": "N/A"
     }
-
     try:
         content = line[2:]  # remove "- " prefix
         parts = content.split(" | ")
-        
+
         for part in parts:
             part = part.strip()
             if "LINE:" in part:
@@ -88,10 +80,7 @@ def parse_review_item(line: str) -> dict:
                 item["fix"] = part.split("FIX:")[-1].strip()
     except:
         pass
-
     return item
-
-
 
 
 def parse_review(raw: str) -> dict:
@@ -105,7 +94,6 @@ def parse_review(raw: str) -> dict:
         "best_practices": [],
         "summary": ""
     }
-
     current_section = None
     lines = raw.split("\n")
 
