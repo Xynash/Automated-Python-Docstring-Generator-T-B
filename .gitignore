@@ -17,3 +17,5 @@ app/uploads/*.py
 # OS specific files
 .DS_Store
 Thumbs.db
+test*.html
+test*.md
