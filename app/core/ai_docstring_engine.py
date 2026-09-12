@@ -37,7 +37,7 @@ def get_client():
     except Exception as e:
         raise Exception(f"Failed to initialize Groq Client: {e}")
 
-MODEL = "llama-3.3-70b-versatile"
+MODEL = "openai/gpt-oss-120b"
 
 def clean_ai_output(doc: str) -> str:
     """Removes markdown and quotes so the Inserter gets raw text."""
