@@ -180,16 +180,6 @@ Where the answer appears in the response: Python documentation in `documented_co
 
 ---
 
-## Known limitations
-
-- **Python comments are not kept.** Documented Python code is regenerated from its syntax tree, so comments in the original are dropped and formatting is normalized. Compare before replacing your files.
-- **Other languages are less exact.** Java, JavaScript, C and C++ are read with text patterns, which can miss unusual code.
-- **AI can be wrong.** Generated examples in docstrings sometimes contain incorrect outputs. Review before publishing.
-- **Large uploads are slow.** Each function is a separate AI request, so uploads are limited to 25 files per run.
-- **The health grade is a rule of thumb,** based on the number and type of audit findings.
-- **No automated tests yet.**
-- **Your code is sent to Groq** for AI features. Don't upload code you aren't allowed to share with a third-party service.
-
 ## Roadmap
 
 - tree-sitter parsing for all languages
